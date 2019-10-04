@@ -1,4 +1,4 @@
-.primary-fg, .primary-fg-flat {
+body.primary-indigo .primary-fg, body.primary-indigo .primary-fg-flat {
   background-color: #3f51b5 !important;
   border-color: #3f51b5 !important;
   transition: .3s;
@@ -25,10 +25,12 @@ color: rgba(255,255,255,0.79);
 
 body.primary-red-orange .primary-fg {
   background-color: linear-gradient(45deg, #f44336, #ffc107) !important;
+  border-color: linear-gradient(45deg, #f44336, #ffc107) !important;
 }
 
 body.primary-red-orange .primary-fg-flat {
   background-color: #f44336 !important;
+  border-color: #f44336 !important;
 }
 
 body.theme-light {

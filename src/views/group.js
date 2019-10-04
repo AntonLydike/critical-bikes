@@ -11,7 +11,7 @@ class GroupItemView extends BaseView {
       <div class="group-body">
         <div class="group-location">${escapeHtml(this.group.getAddress())}</div>
         <div class="group-date">${escapeHtml((new Date(this.group.getTime())).toLocaleString())}</div>
-        <div class="group-note">${escapeHtml(this.group.getDescription()) || '<p class="grey-text">No description provided.</p>'}</div>
+        <div class="group-note">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</div>
       </div>
       <div class="btn-floating btn-large waves-effect waves-light primary-fg-flat">
         <i class="material-icons">add</i>

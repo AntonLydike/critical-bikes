@@ -9,6 +9,7 @@
   width: 300px;
   height: 300px;
   margin: -24px 24px -24px -24px;
+  flex-shrink: 0;
 }
 
 .group-item .group-location {
@@ -31,7 +32,8 @@
   right: 24px;
 }
 
-.group-item  .edit-button {
+/* some not-so-nice css trickery */
+html body .group-item .edit-button {
   position: absolute;
   background: transparent !important;
   right: 0;

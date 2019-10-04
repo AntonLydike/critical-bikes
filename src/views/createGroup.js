@@ -19,6 +19,7 @@ class CreateGroupView extends BaseView {
             this.createGroup(results[0]);
           } else {
             LocationSelectionDialog.asPromise(results).then(location => this.createGroup(location)).catch(abort => {
+              console.error(abort);
               this.$('#errors').innerText = "Please select a location from the list!";
             })
           }
@@ -51,7 +52,7 @@ class CreateGroupView extends BaseView {
   }
 
   createGroup(loc) {
-    this.group.setAddress(loc.display_name);
+    this.group.setAddress(address_to_string(loc));
     this.group.setLatLon(loc.lat, loc.lon);
 
     console.log(new Date(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber));

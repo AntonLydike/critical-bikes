@@ -25,7 +25,7 @@ class LocationSelectionDialog extends BaseDialog {
   getContent() {
     return `<div class="collection with-header">
       <li class="collection-header"><h4>Please select a location:</h4></li>
-      ${this.locations.map((loc, i) => `<a data-index="${i}" class="collection-item">${escapeHtml(loc.display_name)}</a>`).join("")}
+      ${this.locations.map((loc, i) => `<a data-index="${i}" class="collection-item">${escapeHtml(address_to_string(loc))}</a>`).join("")}
     </div>`;
   }
 }
