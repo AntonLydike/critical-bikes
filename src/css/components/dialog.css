@@ -1,0 +1,17 @@
+.modal .modal-content {
+  padding: 16px 16px 0 16px;
+}
+
+.modal .modal-footer {
+  background: inherit;
+}
+
+.modal .modal-footer .btn, .modal .modal-footer .btn-large, .modal .modal-footer .btn-small, .modal .modal-footer .btn-flat {
+    color: inherit;
+    margin-top: 0;
+}
+
+.modal .modal-content .input-field {
+    margin: 0;
+    margin-bottom: 16px;
+}
