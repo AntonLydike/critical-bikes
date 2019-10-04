@@ -69,4 +69,8 @@ class LazyView extends BaseView {
   __lv_loader() {
     return `<div class="ring-loader"></div>`
   }
+
+  getData() {
+    return this.__lv_data;
+  }
 }

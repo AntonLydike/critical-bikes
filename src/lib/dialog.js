@@ -47,7 +47,7 @@ class BaseDialog extends BaseView {
     }
 
     getButtons() {
-        return this.__bd_buttons.map(btn => `<a id="${btn.id || ''}" class="${btn.close === false ? '' : 'modal-close'} waves-effect waves-${btn.color} btn-flat">${btn.text}</a>`).join('\n')
+        return this.__bd_buttons.map(btn => `<a id="${btn.id || ''}" class="waves-effect waves-light ${btn.close === false ? '' : 'modal-close'} waves-effect waves-${btn.color} btn-flat">${btn.text}</a>`).join('\n')
     }
 
     opened() {}

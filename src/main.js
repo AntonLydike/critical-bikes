@@ -8,6 +8,9 @@ const server = new Server({
   url: '/api'
 });
 
+// configure model with server
+BaseModel.server = server;
+
 // create app
 const app = new AppView();
 

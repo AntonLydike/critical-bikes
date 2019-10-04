@@ -7,8 +7,8 @@ class CreateGroupView extends BaseView {
 
     this.events = {
       'submit form': (e) => {
-        this.setLoading(true);
         e.preventDefault();
+        this.setLoading(true);
 
         geocode_find(e.target.elements.address.value.trim()).then(results => {
           this.setLoading(false);
@@ -18,9 +18,9 @@ class CreateGroupView extends BaseView {
           } else if (results.length == 1) {
             this.createGroup(results[0]);
           } else {
-            LocationSelectionDialog.asPromise(results).catch(abort => {
+            LocationSelectionDialog.asPromise(results).then(location => this.createGroup(location)).catch(abort => {
               this.$('#errors').innerText = "Please select a location from the list!";
-            }).then(location => this.createGroup(location))
+            })
           }
         })
       }
@@ -53,12 +53,27 @@ class CreateGroupView extends BaseView {
   createGroup(loc) {
     this.group.setAddress(loc.display_name);
     this.group.setLatLon(loc.lat, loc.lon);
-    this.group.set
+
+    SignupDialog.ensureSignedIn(this.app.server).then(() => {
+      this.group.setCreator(this.app.server.username);
+      this.group.save().then(() => {
+        this.app.addGroup(this.group);
+        this.reset();
+      })
+    }).catch(err => {
+      console.error(err);
+      this.$('#errors').innerText = "You have to choose a username to create a group!";
+    })
   }
 
   setLoading(state) {
     if (state) return this.$('#loader').classList.remove('hide');
 
     this.$('#loader').classList.add('hide');
+  }
+
+  reset() {
+    this.group = new Group();
+    this.redraw();
   }
 }

@@ -49,6 +49,15 @@ class Group extends BaseModel {
   getLatLon() {
     return [this.json.lat, this.json.lon];
   }
+
+  hasLatLon() {
+    return !!this.json.lat && !!this.json.lon;
+  }
+
+  setCreator(username) {
+    this.json.creator = username;
+    this.json.isCreator = true;
+  }
 }
 
 Group.getPath = ({group = ''}) => `/groups/${group}`;

@@ -2,7 +2,7 @@ class LocationSelectionDialog extends BaseDialog {
   constructor(locations, select, discard) {
     super([
       BaseDialog.BTN_DISCARD
-    ], 600);
+    ], 800);
 
     this.locations = locations;
 

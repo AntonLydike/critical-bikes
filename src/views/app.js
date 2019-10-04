@@ -6,8 +6,7 @@ class AppView extends BaseView {
 
     }
 
-    this.mainView = new GroupListView();
-
+    this.groupList = new GroupListView();
   }
 
   getHtml() {
@@ -21,8 +20,8 @@ class AppView extends BaseView {
 
       </nav>
       <div id="app-view-main" class="container">
-        ${this.placeView(this.mainView)}
         ${this.placeView(new CreateGroupView(this))}
+        ${this.placeView(this.groupList)}
       </div>
     </div>`;
   }
@@ -57,5 +56,9 @@ class AppView extends BaseView {
   redraw() {
     super.redraw();
     this.attachEvents();
+  }
+
+  addGroup(group) {
+    this.groupList.addGroup(group);
   }
 }
