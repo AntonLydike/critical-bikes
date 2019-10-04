@@ -9,16 +9,22 @@ USE criticalmass;
 DROP TABLE IF EXISTS groups;
 
 CREATE TABLE groups (
-  `id` VARCHAR(32) NOT NULL PRIMARY KEY,
+  `id` VARCHAR(36) NOT NULL PRIMARY KEY,
+  `description` varchar(1024) NOT NULL,
   `address` VARCHAR(128) NOT NULL,
+  `lat` DECIMAL(10, 8) NOT NULL,
+  `lon` DECIMAL(11, 8) NOT NULL,
   `time` INT(11) NOT NULL,
-  `creator` VARCHAR(32) NOT NULL
+  `creator` VARCHAR(36) NOT NULL
 );
 
 DROP TABLE IF EXISTS participations;
 
 CREATE TABLE participations (
-  `group` VARCHAR(32) NOT NULL,
-  `uid` VARCHAR(32) NOT NULL,
-  `name` VARCHAR(128) NOT NULL
+  `group` VARCHAR(36) NOT NULL,
+  `uid` VARCHAR(36) NOT NULL,
+  `name` VARCHAR(128) NOT NULL,
+
+  PRIMARY KEY (`group`, `uid`),
+  CONSTRAINT fk_group FOREIGN KEY (`group`) REFERENCES `groups`(`id`) ON DELETE CASCADE
 );

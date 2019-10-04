@@ -9,6 +9,9 @@ date_default_timezone_set("UTC");
 # throw a 500 internal server error, when uuidv4 gets weak randomness from openssl_random_pseudo_bytes
 define('ABORT_ON_WEAK_UUID', true);
 
+# list of country codes for OSM nominatim search
+define('COUNTRYCODES', 'de');
+
 ### MySQL connection:
 # wrap inside a function to prevent leaking global vars
 function dbConnect () {

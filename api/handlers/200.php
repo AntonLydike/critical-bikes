@@ -22,6 +22,9 @@ function apply_transform($data, $transform) {
     foreach($transform as $field => $type) {
       if (!isset($line[$field])) continue;
       switch($type) {
+        case "boolean":
+          $line[$field] = $line[$field] == '1' || $line[$field] == 'true';
+          break;
         case "number":
         case "int":
         case "integer":

@@ -105,14 +105,6 @@ function sql_last_id() {
 	return $mysqli->insert_id;
 }
 
-# create part of a query string with some modifiers
-function apply_modifiers($modifiers, $logic = "AND") {
-  if (count($modifiers) == 0) return "";
-  $str = "WHERE " . implode(" AND ", $modifiers);
-  if (ENV_MODE == "DEV") header("X-sql-mods: $str");
-  return $str;
-}
-
 function uuidv4() {
   $data = openssl_random_pseudo_bytes(16, $strong);
 

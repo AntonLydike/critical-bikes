@@ -2,7 +2,7 @@
 
 function assert_auth() {
   $user = get_uid();
-  if ($user == null) return_status(STATUS_UNAUTHORIZED, "Please submit your user id and name!");
+  if ($user == null) return_status(STATUS_UNAUTHORIZED, "Please supply user id in X-UID header!");
   return $user;
 }
 

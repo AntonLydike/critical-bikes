@@ -21,7 +21,7 @@ class Server {
         if (auth.uid && auth.name) {
           this.uid = auth.uid;
           this.username = auth.name;
-          this.authenticated = false;
+          this.authenticated = true;
 
           if (typeof this.settings.onAuth == 'function') this.settings.onAuth(this);
         } else {
@@ -85,8 +85,10 @@ class Server {
   addUid(opts) {
     if (!this.authenticated) return opts;
 
-    if (!opts.header) opts.header = {};
-    opts.header['X-UID'] = this.uid;
+    if (!opts.headers) opts.headers = {};
+    opts.headers['X-UID'] = this.uid;
+
+    console.log(opts);
 
     return opts;
   }

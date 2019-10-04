@@ -1,7 +1,10 @@
 <?php
 register_method("GET", "/api/groups/", function ($matches) {
-  $uid = $_GET['uid'];
-  // $uid = assert_auth();
+  $uid = get_uid();
+
+  if (is_null($uid)) {
+    $uid = "0";
+  }
 
   $from = $_GET['from'];
   $limit_query = '';
@@ -15,115 +18,90 @@ register_method("GET", "/api/groups/", function ($matches) {
   $offset = $_GET['offset'];
   $offset = isset($offset) ? sql_esc($offset) : 0;
 
+  $groups = sql("SELECT `id`, `description`, `address`, `lat`, `lon`, `time`, IF(`creator` = '$uid', 1, 0) as isCreator FROM `groups` $limit_query ORDER BY `time` DESC LIMIT $offset, $limit", 'id');
 
-  $groups = sql("SELECT `id`, `address`, `time`, IF(`creator` = '$uid', 1, 0) as isCreator FROM `groups` $limit_query ORDER BY `time` DESC LIMIT $limit, $offset", 'id');
+  $groupIds = "'".implode("', '", array_keys($groups))."'";
 
-  $participants = sql("SELECT `group`, `name`, IF(`uid` = '$uid') as isMe
-    FROM participations as p
-    JOIN groups as g ON p.group = g.id
-    WHERE g.id IN (SELECT `id` FROM `groups` $limit_query ORDER BY `time` DESC LIMIT $limit, $offset)");
+  $participants = apply_transform(sql("SELECT `group`, `name`, IF(`uid` = '$uid', 1, 0) as isMe
+    FROM `participations` as p
+    JOIN `groups` as g ON p.`group` = g.`id`
+    WHERE g.id IN ($groupIds)"
+  ), ['isMe' => 'boolean']);
 
   foreach ($participants as $participant) {
     if (!isset($groups[$participant['group']])) {
-      $groups[$participant['group']] = [$participant]
+      // log error? (we got a participation back, for a group we do not have)
+      continue;
+    }
+    if (!isset($groups[$participant['group']]['participants'])) {
+      $groups[$participant['group']]['participants'] = [$participant];
     } else {
-      $groups[$participant['group']][] = $participant;
+      $groups[$participant['group']]['participants'][] = $participant;
     }
   }
 
-  return_status(STATUS_OK, $groups);
+  return_status(STATUS_OK, array_values($groups), ['isCreator' => 'boolean']);
 });
 
 register_method("POST", "/api/groups/", function ($matches) {
-  $user = assert_auth();
+  $user = sql_esc(assert_auth());
   $body = get_json_body();
-  $bookId = sql_esc(assert_uuid($matches[1]));
 
-  assert_json_has($body, 'name');
+  assert_json_has($body, ['address', 'time', 'lat', 'lon']);
 
-  $book = get_notebook($user['id'], $bookId);
-
-  assert_result($book, "Notebook not found!");
-
-  $query = new InsertQuery('folders');
+  $query = new InsertQuery('groups');
 
   $query->with_uuid()
-    ->created_now()
-    ->set('name', $body['name'])
-    ->set_uuid('notebook', $bookId)
-    ->set_optional('color', assert_color($body['color']))
-    ->set_optional_uuid('parent', $body['parent'])
+    ->set('address', $body['address'])
+    ->set('time', $body['time'])
+    ->set('lat', $body['lat'])
+    ->set('lon', $body['lon'])
+    ->set_uuid('creator', $user)
+    ->set_optional('description', $body['description'])
     ->run();
 
-  if (!$query->success) {
-    return_status(STATUS_BAD_REQUEST, "Could not create notebook");
-  }
-
-  $folderId = $query->getId();
-
-  $noteId = (new InsertQuery('notes'))
-    ->with_uuid()
-    ->created_now()
-    ->set('name', $body['name'])
-    ->set('content', '')
-    ->set_optional('color', assert_color($body['color']))
-    ->set_uuid('folder', $folderId)
-    ->run()->getid();
-
-  sql("UPDATE folders SET note = UUID_TO_BIN('$noteId') WHERE id = UUID_TO_BIN('$folderId')");
-
   if ($query->success) {
-    return_status(STATUS_CREATED, $query->fetch(['id', 'name', 'created', 'color', 'BIN_TO_UUID(parent)' => 'parent', 'BIN_TO_UUID(note)' => 'note']));
+    return_status(STATUS_CREATED, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']));
   } else {
-    return_status(STATUS_BAD_REQUEST, "Could not create notebook");
+    return_status(STATUS_BAD_REQUEST, "Could not create group");
   }
 
 });
 
 register_method("DELETE", "/api/groups/:group", function ($matches) {
-  $user = assert_auth();
-  $body = get_json_body();
-  $bookId = sql_esc(assert_uuid($matches[1]));
-  $folderId = sql_esc(assert_uuid($matches[2]));
+  $user = sql_esc(assert_auth());
+  $goup = sql_esc(assert_uuid($matches[1]));
 
-  $book = get_notebook($user['id'], $bookId);
-
-  assert_result($book, "Notebook not found!");
-
-  $res = sql("DELETE FROM folders WHERE id = UUID_TO_BIN('$folderId') AND notebook = UUID_TO_BIN('$bookId') LIMIT 1");
+  $res = sql("DELETE FROM groups WHERE id = '$group' AND creator = '$user' LIMIT 1");
 
   if ($res->affected_rows == 1) {
     return_status(STATUS_NO_CONTENT);
   } else {
-    return_status(STATUS_NOT_FOUND, "Folder with id $folderId was not found on the server");
+    return_status(STATUS_NOT_FOUND, "Group not found (or does not belong to you)");
   }
 });
 
 register_method("POST", "/api/groups/:group", function ($matches) {
-  $user = assert_auth();
+  $user = sql_esc(assert_auth());
   $body = get_json_body();
-  $bookId = sql_esc(assert_uuid($matches[1]));
-  $folderId = sql_esc(assert_uuid($matches[2]));
+  $group = sql_esc(assert_uuid($matches[1]));
 
-  $book = get_notebook($user['id'], $bookId);
+  $group = sql("SELECT `id` FROM groups WHERE id = '$group' AND creator = '$user'");
 
-  assert_result($book, "Notebook not found!");
+  assert_result($group, "Group not found (or does not belong to you)!");
 
   $query = new UpdateQuery('folders', $folderId);
   $query
-    ->set_optional('name', $body['name'])
-    ->set_optional('color', $body['color'])
-    ->set_optional_uuid('parent', $body['parent'])
-    ->set_optional_uuid('note', $body['note'])
-    ->where("notebook = UUID_TO_BIN('$bookId')")
+    ->set_optional('description', $body['description'])
+    ->set_optional('address', $body['address'])
+    ->set_optional('time', $body['time'])
+    ->where("creator = '$user'")
     ->run();
 
   if ($query->success) {
-    return_status(STATUS_OK, $query->fetch(['id', 'name', 'created', 'color', 'BIN_TO_UUID(parent)' => 'parent', 'BIN_TO_UUID(note)' => 'note']));
+    return_status(STATUS_OK, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']));
   } else {
-    return_status(500, "Error editing folder");
+    return_status(500, "Error editing group");
   }
-
 });
-
 ?>

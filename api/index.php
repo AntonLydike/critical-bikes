@@ -2,6 +2,7 @@
 
 require_once 'settings.php';
 require_once 'sql.php';
+require_once 'auth.php';
 require_once 'assert.php';
 require_once 'requestLogic.php';
 

@@ -1,6 +1,10 @@
 class Group extends BaseModel {
-  constructor(json, notebook) {
+  constructor(json = {}) {
     super(json);
+
+    if (!json.participants) {
+      json.participants = [];
+    }
   }
 
   __getPath() {
@@ -10,7 +14,27 @@ class Group extends BaseModel {
   }
 
   isAtCapacity() {
-    return this.json.capacity > 16;
+    return this.json.capacity > 15;
+  }
+
+  getAddress() {
+    return this.json.address;
+  }
+
+  getAddress() {
+    return this.json.address;
+  }
+
+  isCreator() {
+    return this.json.isCreator;
+  }
+
+  getTime() {
+    return new Date(this.json.time);
+  }
+
+  getParticipants() {
+    return this.json.participants;
   }
 }
 

@@ -15,13 +15,13 @@ class AppView extends BaseView {
       <nav class="primary-fg">
         <div class="nav-wrapper">
           <a class="brand-logo">
-            FFF <span class="light">Horde</span>
+            Critical<span class="light">Bikes</span>
           </a>
         </div>
 
       </nav>
       <div id="app-view-main" class="container">
-
+        ${this.placeView(this.mainView)}
       </div>
     </div>`;
   }

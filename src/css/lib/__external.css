@@ -1,3 +1,2 @@
 @download "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.css"
-/* @download "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/github-gist.min.css" */
-@download "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/atom-one-dark-reasonable.min.css"
+@download "https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"

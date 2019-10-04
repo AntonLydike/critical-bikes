@@ -17,13 +17,3 @@ nav .brand-logo i.material-icons {
     margin: 0 16px;
   }
 }
-
-nav .switch > label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 0 12px;
-}
-nav .switch > label i.material-icons {
-  margin: 0 -8px;
-}
