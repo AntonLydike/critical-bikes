@@ -1,0 +1,12 @@
+.collection li {
+  list-style: none;
+}
+
+.collection .collection-header {
+  padding-top: 24px;
+}
+
+.collection a.collection-item {
+  color: inherit;
+  cursor: pointer;
+}

@@ -22,6 +22,7 @@ class AppView extends BaseView {
       </nav>
       <div id="app-view-main" class="container">
         ${this.placeView(this.mainView)}
+        ${this.placeView(new CreateGroupView(this))}
       </div>
     </div>`;
   }
@@ -51,5 +52,10 @@ class AppView extends BaseView {
       constrainWidth: elm.classList.contains('constrain-width'),
       coverTrigger: elm.classList.contains('cover-trigger')
     }))
+  }
+
+  redraw() {
+    super.redraw();
+    this.attachEvents();
   }
 }

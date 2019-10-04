@@ -34,3 +34,7 @@ body.theme-light {
   background: #fff;
   transition: .3s;
 }
+
+body.theme-light .modal {
+  background: #fff;
+}

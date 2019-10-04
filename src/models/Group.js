@@ -36,6 +36,19 @@ class Group extends BaseModel {
   getParticipants() {
     return this.json.participants;
   }
+
+  setAddress(string) {
+    this.json.address = string;
+  }
+
+  setLatLon(lat, lon) {
+    this.json.lat = lat;
+    this.json.lon = lon;
+  }
+
+  getLatLon() {
+    return [this.json.lat, this.json.lon];
+  }
 }
 
 Group.getPath = ({group = ''}) => `/groups/${group}`;

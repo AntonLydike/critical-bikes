@@ -5,6 +5,6 @@ class GroupItemView extends BaseView {
   }
 
   getHtml() {
-    return `<div class="z-depth-1 fg-color flex flex-row"></div>`
+    return `<div class="z-depth-1 fg-color flex flex-row"><div </div>`
   }
 }

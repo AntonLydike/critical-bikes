@@ -16,3 +16,4 @@ CriticalMass planning tool.
  - You can use the [`db.sql`](db.sql) file to set up the database and user (probably want to choose a different password)
  - you can configure the "backend" in the [`settings.php`](/api/settings.php)
  - please make sure, that htaccess files are enabled in you apache config, and the rewrite engine is on (`a2enmod rewrite; service apache2 restart`)
+ - when you are using this in anothe country, you currently have to modify the geocoding country tag manually in the [`geocode.js`](/src/lib/geocode.js) file.

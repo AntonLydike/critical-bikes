@@ -88,8 +88,6 @@ class Server {
     if (!opts.headers) opts.headers = {};
     opts.headers['X-UID'] = this.uid;
 
-    console.log(opts);
-
     return opts;
   }
 

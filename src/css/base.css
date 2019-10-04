@@ -48,10 +48,3 @@ input {
     font-size: 1.6rem;
   }
 }
-
-#app-view-main {
-  flex-grow: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
