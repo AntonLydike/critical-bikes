@@ -54,6 +54,9 @@ class CreateGroupView extends BaseView {
     this.group.setAddress(loc.display_name);
     this.group.setLatLon(loc.lat, loc.lon);
 
+    console.log(new Date(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber));
+    this.group.setTime(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber);
+
     SignupDialog.ensureSignedIn(this.app.server).then(() => {
       this.group.setCreator(this.app.server.username);
       this.group.save().then(() => {

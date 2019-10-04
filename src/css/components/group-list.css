@@ -1,0 +1,48 @@
+.group-item {
+  margin: 32px 0;
+  border-radius: 3px;
+  padding: 24px;
+  position: relative;
+}
+
+.group-item .map-part {
+  width: 300px;
+  height: 300px;
+  margin: -24px 24px -24px -24px;
+}
+
+.group-item .group-location {
+  font-size: 1.8rem;
+  font-weight: 300;
+}
+
+.group-item .group-date {
+  font-size: 1.4rem;
+  opacity: .6;
+}
+
+.group-body > *:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.group-item .btn-floating{
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+}
+
+.group-item  .edit-button {
+  position: absolute;
+  background: transparent !important;
+  right: 0;
+  top: 0;
+  border-bottom: 80px solid transparent !important;
+  border-right: 80px solid;
+}
+
+.group-item  .edit-button i.material-icons {
+  position: absolute;
+  top: 11px;
+  right: -70px;
+  color: #fff;
+}

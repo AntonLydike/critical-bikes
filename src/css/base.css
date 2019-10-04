@@ -29,7 +29,7 @@ html, body {
   margin-top: 64px;
   flex-direction: row;
   align-items: stretch;
-  overflow: hidden;
+  overflow: auto;
 }
 
 input {

@@ -41,7 +41,8 @@ class SignupDialog extends BaseDialog {
 
 SignupDialog.asPromise = server => new Promise((res, rej) => new SignupDialog(server, res, rej));
 
-SignupDialog.ensureSignedUp = server => {
+// promise resolves instantly when user is signed, otherwise dialog is shown
+SignupDialog.ensureSignedIn = server => {
   if (server.authenticated) return Promise.resolve();
   return SignupDialog.asPromise(server);
 }

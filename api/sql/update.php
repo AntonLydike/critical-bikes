@@ -12,7 +12,7 @@ class UpdateQuery {
   public function __construct($table, $id) {
     $this->table = $table;
     $this->id = $id;
-    $this->conditions[] = "id = UUID_TO_BIN('$this->id')";
+    $this->conditions[] = "id = '$this->id'";
   }
 
   public function set_uuid($field, $id) {
@@ -36,6 +36,10 @@ class UpdateQuery {
 
   public function set($field, $value) {
     if (!isset($value) || is_null($value)) return $this->set_null($field);
+
+    if ($field == 'id') {
+      $this->id = $value;
+    }
 
     $this->values[$field] = "'".sql_esc($value)."'";
     return $this;
@@ -74,9 +78,7 @@ class UpdateQuery {
     $sql_fields = [];
 
     foreach($fields as $key => $value) {
-      if (is_numeric($key) && $value == 'id') {
-        $sql_fields[] = "BIN_TO_UUID(id) as `id`";
-      } else if (is_numeric($key)) {
+      if (is_numeric($key)) {
         $sql_fields[] =  "`$value`";
       } else {
         $sql_fields[] =  "$key as `$value`";

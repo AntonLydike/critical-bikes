@@ -13,9 +13,10 @@ class InsertQuery {
   }
 
   public function with_uuid() {
-    return $this->set_uuid('id', uuidv4());
+    return $this->set('id', uuidv4());
   }
 
+  // only used when db is configured with UUID datatype (which requires UUID_TO_BIN)
   public function set_uuid($field, $id) {
     if ($field == 'id') {
       $this->id = $id;
@@ -47,6 +48,10 @@ class InsertQuery {
 
   public function set($field, $value) {
     if (!isset($value) || is_null($value)) return $this->set_null($field);
+
+    if ($field == 'id') {
+      $this->id = $value;
+    }
 
     $this->values[sql_esc($field)] = "'".sql_esc($value)."'";
     return $this;
@@ -86,9 +91,7 @@ class InsertQuery {
     $sql_fields = [];
 
     foreach($fields as $key => $value) {
-      if (is_numeric($key) && $value == 'id') {
-        $sql_fields[] = "BIN_TO_UUID(id) as `id`";
-      } else if (is_numeric($key)) {
+      if (is_numeric($key)) {
         $sql_fields[] =  "`$value`";
       } else {
         $sql_fields[] =  "$key as `$value`";
@@ -97,7 +100,7 @@ class InsertQuery {
 
     $sql_fields = implode(", ", $sql_fields);
 
-    return sql("SELECT $sql_fields FROM `$this->table` WHERE id = UUID_TO_BIN('$this->id')")[0];
+    return sql("SELECT $sql_fields FROM `$this->table` WHERE id = '$this->id'")[0];
   }
 
   public function getId() {

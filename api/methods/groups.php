@@ -56,16 +56,15 @@ register_method("POST", "/api/groups/", function ($matches) {
     ->set('time', $body['time'])
     ->set('lat', $body['lat'])
     ->set('lon', $body['lon'])
-    ->set_uuid('creator', $user)
+    ->set('creator', $user)
     ->set_optional('description', $body['description'])
     ->run();
 
   if ($query->success) {
-    return_status(STATUS_CREATED, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']));
+    return_status(STATUS_CREATED, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']), ['isCreator' => 'boolean']);
   } else {
     return_status(STATUS_BAD_REQUEST, "Could not create group");
   }
-
 });
 
 register_method("DELETE", "/api/groups/:group", function ($matches) {
@@ -99,7 +98,7 @@ register_method("POST", "/api/groups/:group", function ($matches) {
     ->run();
 
   if ($query->success) {
-    return_status(STATUS_OK, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']));
+    return_status(STATUS_OK, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']), ['isCreator' => 'boolean']);
   } else {
     return_status(500, "Error editing group");
   }

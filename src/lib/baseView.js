@@ -42,10 +42,8 @@ class BaseView {
         this.____nodes = Array.from(node.childNodes);
         node.childNodes.forEach(child => root.appendChild(child));
 
-        // call the rendered event handler
-        if (typeof this.events.rendered == 'function') {
-            this.events.rendered.call(this);
-        }
+        // call the DOM inserted event handler
+        this.__triggerDOMInsertedEvent()
     }
 
     /**
@@ -62,10 +60,17 @@ class BaseView {
         }
         anchor.replaceWith(...node.childNodes);
 
-        // call the rendered event handler
-        if (typeof this.events.rendered == 'function') {
-            this.events.rendered.call(this);
-        }
+        // call the DOM inserted event handler
+        this.__triggerDOMInsertedEvent()
+    }
+
+    __triggerDOMInsertedEvent() {
+      if (!this.isRendered()) return;
+
+      this.rendered();
+
+      Object.values(this.__subViews).forEach(view => view.__triggerDOMInsertedEvent());
+
     }
 
     /**
@@ -178,4 +183,9 @@ class BaseView {
             node.remove();
         })
     }
+
+    /**
+     * called **once** per DOM insertion
+     */
+    rendered() { }
 }

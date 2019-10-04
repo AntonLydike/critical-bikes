@@ -5,6 +5,10 @@ class Group extends BaseModel {
     if (!json.participants) {
       json.participants = [];
     }
+
+    if (json.time) {
+      json.time = +json.time;
+    }
   }
 
   __getPath() {
@@ -33,6 +37,14 @@ class Group extends BaseModel {
     return new Date(this.json.time);
   }
 
+  setTime(date) {
+    if (date instanceof Date) {
+      date = date.valueOf();
+    }
+
+    this.json.time = date;
+  }
+
   getParticipants() {
     return this.json.participants;
   }
@@ -57,6 +69,14 @@ class Group extends BaseModel {
   setCreator(username) {
     this.json.creator = username;
     this.json.isCreator = true;
+  }
+
+  getDescription() {
+    return this.json.description;
+  }
+
+  setDescription(desc) {
+    this.json.description = desc;
   }
 }
 
