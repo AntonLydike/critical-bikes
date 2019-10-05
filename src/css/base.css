@@ -25,11 +25,9 @@ html, body {
 
 .app-layout {
   flex-grow: 1;
-  display: flex;
   margin-top: 64px;
-  flex-direction: row;
-  align-items: stretch;
   overflow: auto;
+  padding-bottom: 80px; /* 24px + 56px */
 }
 
 input {
@@ -42,6 +40,7 @@ input {
   font-size: 2.1rem;
   white-space: nowrap;
 }
+
 
 @media (max-width: 992px) {
   .brand-logo, nav .brand-logo {

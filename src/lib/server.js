@@ -72,7 +72,7 @@ class Server {
     		'Content-Type': 'application/json'
     	},
       body: JSON.stringify(body) || ''
-    })).then(this.handleRequest(false, 204));
+    })).then(this.handleRequest(true));
   }
 
   get(url) {

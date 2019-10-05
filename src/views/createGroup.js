@@ -100,6 +100,7 @@ class CreateGroupView extends BaseDialog {
   reset() {
     this.group = new Group();
     this.$('#errors').innerText = "";
+    this.$$('input').forEach(i => i.value="")
     this.close();
   }
 }

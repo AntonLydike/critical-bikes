@@ -6,6 +6,15 @@ class GroupItemView extends BaseView {
     this.events = {
       'click .edit-button': e => {
         EditGroupDialog.asPromise(this.group).then(g => this.redraw());
+      },
+      'click .join-leave-button': e => {
+        SignupDialog.ensureSignedIn(server).then(empty => {  
+          if (this.group.isParticipating()) {
+            this.group.leave().then(x => this.redraw());
+          } else {
+            this.group.join().then(x => this.redraw());
+          }
+        })
       }
     }
   }
@@ -23,7 +32,7 @@ class GroupItemView extends BaseView {
         <i class="group-note flex-grow">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</i>
         <div class="group-participants">With: ${this.group.getParticipants().map(p => `<span class="${p.isMe ? 'is-me primary-text' : ''}">${escapeHtml(p.name)}</span>`).join(", ")}</div>
         <div class="group-buttons align-right">
-          <a class="btn primary-fg-flat waves-effect waves-light">
+          <a class="join-leave-button btn primary-fg-flat waves-effect waves-light">
             ${this.group.isParticipating() ? 'I can\'t make it' : 'I\'ll be there'}
           </a>
         </div>

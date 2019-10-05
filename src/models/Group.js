@@ -94,6 +94,30 @@ class Group extends BaseModel {
   isParticipating() {
     return this.json.participants.some(part => part.isMe);
   }
+
+  join() {
+    if (this.isParticipating()) return this;
+
+    const uid = server.uid;
+    const name = server.username;
+
+    return server.post(this.__getPath() + '/part', {name}).then(json => {
+      this.updateJson(json);
+      return this;
+    })
+  }
+
+  leave() {
+    if (!this.isParticipating()) return this;
+
+    const uid = server.uid;
+    const name = server.username;
+
+    return server.delete(this.__getPath() + '/part').then(json => {
+      this.updateJson(json);
+      return this;
+    })
+  }
 }
 
 Group.getPath = ({group = ''}) => `/groups/${group}`;
