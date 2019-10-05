@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# this bundles the frontend files
+
 set -eu
 
 log=".build.log"
@@ -30,8 +32,8 @@ for arg in "$@"; do
     arg="${arg:2}"
     # if arg contains an "=", use the value behind it
     if [[ "$arg" =~ '=' ]]; then
-      key="${a%%=*}"
-      val="${a#*=}"
+      key="${arg%%=*}"
+      val="${arg#*=}"
       flags[$key]="$val"
     # handle --key (implicit --key=true)
     else

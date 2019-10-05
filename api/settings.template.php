@@ -1,7 +1,7 @@
 <?php
 ## Here we put all the settings:
 
-define('ENV_MODE', 'DEV');
+define('ENV_MODE', '__MODE__');
 
 # we operate with UTC timestamps, makes things easier down the line
 date_default_timezone_set("UTC");
@@ -15,10 +15,10 @@ function dbConnect () {
 	global $mysqli;
 
 	# MySQL auth:
-	$MYSQL_HOST      = 'localhost';
-	$MYSQL_USER      = 'criticalmass';
-	$MYSQL_PASSWORD  = 'password';
-	$MYSQL_DB        = 'criticalmass';
+	$MYSQL_HOST      = '__HOST__';
+	$MYSQL_USER      = '__USER__';
+	$MYSQL_PASSWORD  = '__PASSWORD__';
+	$MYSQL_DB        = '__DATABASE__';
 
 	## No other changes required below
 
