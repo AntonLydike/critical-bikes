@@ -3,6 +3,9 @@ body.primary-indigo .primary-fg, body.primary-indigo .primary-fg-flat {
   border-color: #3f51b5 !important;
   transition: .3s;
 }
+body.primary-indigo .primary-text, body.primary-indigo a[href] {
+  color: #3f51b5;
+}
 
 /*// enable theming //*/
 body.theme-dark {
@@ -24,8 +27,17 @@ color: rgba(255,255,255,0.79);
 }
 
 body.primary-red-orange .primary-fg {
-  background-color: linear-gradient(45deg, #f44336, #ffc107) !important;
-  border-color: linear-gradient(45deg, #f44336, #ffc107) !important;
+  background: #f44336;
+  background: -moz-linear-gradient(-45deg, #f44336 0%, #ffc107 100%);
+  background: -webkit-linear-gradient(-45deg, #f44336 0%,#ffc107 100%);
+  background: linear-gradient(135deg, #f44336 0%,#ffc107 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f44336', endColorstr='#ffc107',GradientType=1 );
+
+  border-color: linear-gradient(135deg, #f44336 0%,#ffc107 100%);
+}
+
+body.primary-red-orange .primary-text, body.primary-red-orange a[href] {
+  color: #f44336;
 }
 
 body.primary-red-orange .primary-fg-flat {

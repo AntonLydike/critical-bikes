@@ -18,9 +18,16 @@ register_method("GET", "/api/groups/", function ($matches) {
   $offset = $_GET['offset'];
   $offset = isset($offset) ? sql_esc($offset) : 0;
 
-  $groups = sql("SELECT `id`, `description`, `address`, `lat`, `lon`, `time`, IF(`creator` = '$uid', 1, 0) as isCreator FROM `groups` $limit_query ORDER BY `time` DESC LIMIT $offset, $limit", 'id');
+  $groups = sql("SELECT `id`, `description`, `address`, `destination`, `lat`, `lon`, `time`, IF(`creator` = '$uid', 1, 0) as isCreator FROM `groups` $limit_query ORDER BY `time` DESC LIMIT $offset, $limit");
 
-  $groupIds = "'".implode("', '", array_keys($groups))."'";
+  $groupDict = [];
+
+  foreach ($groups as &$group) {
+    $groupDict[$group['id']] = &$group;
+    $group['participants'] = [];
+  }
+
+  $groupIds = "'".implode("', '", array_keys($groupDict))."'";
 
   $participants = apply_transform(sql("SELECT `group`, `name`, IF(`uid` = '$uid', 1, 0) as isMe
     FROM `participations` as p
@@ -29,15 +36,12 @@ register_method("GET", "/api/groups/", function ($matches) {
   ), ['isMe' => 'boolean']);
 
   foreach ($participants as $participant) {
-    if (!isset($groups[$participant['group']])) {
+    if (!isset($groupDict[$participant['group']])) {
       // log error? (we got a participation back, for a group we do not have)
       continue;
     }
-    if (!isset($groups[$participant['group']]['participants'])) {
-      $groups[$participant['group']]['participants'] = [$participant];
-    } else {
-      $groups[$participant['group']]['participants'][] = $participant;
-    }
+
+    $groupDict[$participant['group']]['participants'][] = $participant;
   }
 
   return_status(STATUS_OK, array_values($groups), ['isCreator' => 'boolean']);
@@ -47,21 +51,25 @@ register_method("POST", "/api/groups/", function ($matches) {
   $user = sql_esc(assert_auth());
   $body = get_json_body();
 
-  assert_json_has($body, ['address', 'time', 'lat', 'lon']);
+  assert_json_has($body, ['address', 'time', 'lat', 'lon', 'creator']);
 
   $query = new InsertQuery('groups');
 
   $query->with_uuid()
-    ->set('address', $body['address'])
+    ->set('address', substr($body['address'], 0, 128))
     ->set('time', $body['time'])
     ->set('lat', $body['lat'])
     ->set('lon', $body['lon'])
     ->set('creator', $user)
-    ->set_optional('description', $body['description'])
+    ->set_optional('destination', substr($body['destination'], 0, 128))
+    ->set_optional('description', substr($body['description'], 0, 1024))
     ->run();
 
+  $id = $query->getId();
+  sql("INSERT INTO participations(`group`, `uid`, `name`) VALUES ('$id', '$user', '$body[creator]')");
+
   if ($query->success) {
-    return_status(STATUS_CREATED, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']), ['isCreator' => 'boolean']);
+    return_status(STATUS_CREATED, getGroup($query->getId()), ['isCreator' => 'boolean']);
   } else {
     return_status(STATUS_BAD_REQUEST, "Could not create group");
   }
@@ -91,6 +99,9 @@ register_method("POST", "/api/groups/:group", function ($matches) {
 
   $query = new UpdateQuery('folders', $folderId);
   $query
+    ->set_optional('destination', $body['destination'])
+    ->set_optional('lat', $body['lat'])
+    ->set_optional('lon', $body['lon'])
     ->set_optional('description', $body['description'])
     ->set_optional('address', $body['address'])
     ->set_optional('time', $body['time'])
@@ -98,9 +109,24 @@ register_method("POST", "/api/groups/:group", function ($matches) {
     ->run();
 
   if ($query->success) {
-    return_status(STATUS_OK, $query->fetch(['id', 'description', 'address', 'lat', 'lon', 'time', "IF(`creator` = '$user', 1, 0)" => 'isCreator']), ['isCreator' => 'boolean']);
+    return_status(STATUS_OK, getGroup($query->getId()), ['isCreator' => 'boolean']);
   } else {
     return_status(500, "Error editing group");
   }
 });
+
+function getGroup($id) {
+  $group = sql("SELECT `id`, `description`, `address`, `destination`, `lat`, `lon`, `time`, IF(`creator` = '$uid', 1, 0) as isCreator FROM `groups` WHERE id = '$id'");
+  if (is_null($group) || count($group) == 0) return null;
+
+  $group = $group[0];
+
+  $group['participants'] = apply_transform(sql("SELECT `group`, `name`, IF(`uid` = '$uid', 1, 0) as isMe
+    FROM `participations` as p
+    JOIN `groups` as g ON p.`group` = g.`id`
+    WHERE g.id = '$id'"
+  ), ['isMe' => 'boolean']);
+
+  return $group;
+}
 ?>

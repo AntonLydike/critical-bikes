@@ -12,6 +12,7 @@ CREATE TABLE groups (
   `id` VARCHAR(36) NOT NULL PRIMARY KEY,
   `description` varchar(1024) NOT NULL DEFAULT '',
   `address` VARCHAR(128) NOT NULL,
+  `destination` VARCHAR(128) NOT NULL,
   `lat` DECIMAL(10, 8) NOT NULL,
   `lon` DECIMAL(11, 8) NOT NULL,      -- why is there an 11 here? read this: https://stackoverflow.com/a/12504340/4141651
   `time` BIGINT UNSIGNED NOT NULL,

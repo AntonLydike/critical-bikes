@@ -1,0 +1,11 @@
+.submit-col {
+  margin: 1rem 0;
+  align-items: center;
+  height: 54px;
+}
+
+#open-create-group-window {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+}

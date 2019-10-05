@@ -1,8 +1,9 @@
 class BaseDialog extends BaseView {
-    constructor(buttons, width) {
+    constructor(buttons, width, opts = {}) {
         super();
         this.__bd_buttons = buttons || [];
         this.__bd_width = width || 400;
+        this.__bd_autodestroy = opts.autodestroy === undefined ? true : opts.autodestroy;
     }
 
     getHtml() {
@@ -18,12 +19,16 @@ class BaseDialog extends BaseView {
     }
 
     open() {
-        this.renderInside(document.body);
-        this.instance = M.Modal.init(this.____nodes[0], {
+        if (!this.isRendered()) {
+          this.renderInside(document.body);
+        }
+        if (!this.instance) {
+          this.instance = M.Modal.init(this.____nodes[0], {
             onCloseEnd: () => {
-                this.close();
+              this.close();
             }
-        });
+          });
+        }
         this.instance.open();
         this.opened();
 
@@ -37,8 +42,10 @@ class BaseDialog extends BaseView {
         this.instance.close();
 
         setTimeout(() => {
-          this.instance.destroy();
-          this.remove();
+          if (this.__bd_autodestroy) {
+            this.instance.destroy();
+            this.remove();
+          }
         }, this.instance.options.outDuration || 250);
     }
 

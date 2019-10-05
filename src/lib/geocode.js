@@ -21,7 +21,7 @@ function address_to_string(a) {
     interesting_keys.push(a.road + (a.house_number ? (' ' + a.house_number) : ''));
   }
 
-  return `${interesting_keys.join(", ")}, ${a.neighbourhood || a.suburb || a.postcode}, ${a.city || a.county}`;
+  return `${interesting_keys.join(", ")}, ${a.neighbourhood || a.suburb || a.postcode}, ${a.city || a.county || a.state || a.country}`;
 }
 
 address_to_string.uninteresting_keys = uninteresting_keys = ['city', 'country', 'country_code', 'house_number', 'neighbourhood', 'postcode', 'road', 'state', 'state_district', 'suburb', 'information'];

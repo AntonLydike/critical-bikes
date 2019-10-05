@@ -8,13 +8,16 @@ class GroupItemView extends BaseView {
     return `<div class="group-item z-depth-2 flex flex-row ${this.group.isCreator() ? 'is-creator' : ''}">
       <div class="map-part" style="width: 300px">
       </div>
-      <div class="group-body">
+      <div class="group-body flex-col flex-grow">
         <div class="group-location">${escapeHtml(this.group.getAddress())}</div>
-        <div class="group-date">${escapeHtml((new Date(this.group.getTime())).toLocaleString())}</div>
-        <div class="group-note">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</div>
-      </div>
-      <div class="btn-floating btn-large waves-effect waves-light primary-fg-flat">
-        <i class="material-icons">add</i>
+        <div class="group-date grey-text">${escapeHtml((new Date(this.group.getTime())).toLocaleString())}</div>
+        <i class="group-note flex-grow">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</i>
+        <div class="group-participants">${this.group.getParticipants().map(p => `<span class="${p.isMe ? 'is-me primary-text' : ''}">${escapeHtml(p.name)}</span>`).join(", ")}</div>
+        <div class="group-buttons align-right">
+          <a class="btn primary-fg-flat waves-effect waves-light">
+            ${this.group.isParticipating() ? 'I can\'t make it' : 'I\'ll be there'}
+          </a>
+        </div>
       </div>
       ${this.group.isCreator() ? '<div class="edit-button primary-fg-flat"><i class="material-icons">edit</i></div>' : ''}
     </div>`

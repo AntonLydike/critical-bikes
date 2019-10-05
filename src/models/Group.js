@@ -34,7 +34,7 @@ class Group extends BaseModel {
   }
 
   getTime() {
-    return new Date(this.json.time);
+    return new Date(+this.json.time);
   }
 
   setTime(date) {
@@ -49,8 +49,20 @@ class Group extends BaseModel {
     return this.json.participants;
   }
 
+  getCount() {
+    return this.json.participants.length;
+  }
+
   setAddress(string) {
     this.json.address = string;
+  }
+
+  getDestination() {
+    return this.json.destination;
+  }
+
+  setDestination(dest) {
+    this.json.destination = dest;
   }
 
   setLatLon(lat, lon) {
@@ -77,6 +89,10 @@ class Group extends BaseModel {
 
   setDescription(desc) {
     this.json.description = desc;
+  }
+
+  isParticipating() {
+    return this.json.participants.some(part => part.isMe);
   }
 }
 

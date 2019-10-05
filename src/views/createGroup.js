@@ -1,11 +1,17 @@
-class CreateGroupView extends BaseView {
+class CreateGroupView extends BaseDialog {
   constructor(app, group) {
-    super();
+    super([], 1024, {autodestroy: false});
 
     this.app = app;
     this.group = group || new Group();
 
+    this.isOpen = false;
+
     this.events = {
+      'click #open-create-group-window': e => {
+        e.preventDefault();
+        this.open();
+      },
       'submit form': (e) => {
         e.preventDefault();
         this.setLoading(true);
@@ -29,24 +35,38 @@ class CreateGroupView extends BaseView {
   }
 
   getHtml() {
+    let button = `<div class="btn-floating btn-large waves-effect waves-light primary-fg-flat" id="open-create-group-window">
+      <i class="material-icons">add</i>
+    </div>`
+
+    return super.getHtml() + button;
+  }
+
+  getContent() {
     return `<form class="row">
         <h2>Create a new group</h2>
-        <div class="input-field col s12 m8">
+        <div class="input-field col s12 m6 l8">
           <input type="text" name="address" id="address" required/>
-          <label for="address">Address</label>
+          <label for="address">Meeting point</label>
         </div>
-        <div class="input-field col s12 m2">
+        <div class="input-field col s12 m3 l2">
           <input type="date" name="date" id="date" required value="${(new Date()).toISOString().split('T')[0]}"/>
           <label for="date">Date</label>
         </div>
-        <div class="input-field col s12 m2">
+        <div class="input-field col s12 m3 l2">
           <input type="time" name="time" id="time" step="60" required/>
           <label for="time">Time</label>
         </div>
-        <div class="col s12 center">
-          <span class="red-text left" id="errors"></div>
+        <div class="input-field col s12 m6 l8">
+          <input type="text" name="target" id="target"/>
+          <label for="target">Destination (optional)</label>
+        </div>
+        <div class="col s12 m6 l4 center submit-col flex-row">
+          <span class="red-text left flex-grow" id="errors"></span>
           <button class="btn primary-fg right" type="submit">
-            <div class="ring-loader small hide" id="loader"></div>Create</button>
+            <div class="ring-loader small hide" id="loader"></div>
+            Create
+          </button>
         </div>
       </form>`;
   }
@@ -54,6 +74,7 @@ class CreateGroupView extends BaseView {
   createGroup(loc) {
     this.group.setAddress(address_to_string(loc));
     this.group.setLatLon(loc.lat, loc.lon);
+    this.group.setDestination(this.$('#target').value.trim());
 
     console.log(new Date(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber));
     this.group.setTime(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber);
@@ -78,6 +99,7 @@ class CreateGroupView extends BaseView {
 
   reset() {
     this.group = new Group();
-    this.redraw();
+    this.$('#errors').innerText = "";
+    this.close();
   }
 }
