@@ -2,6 +2,12 @@ class GroupItemView extends BaseView {
   constructor(group) {
     super();
     this.group = group;
+
+    this.events = {
+      'click .edit-button': e => {
+        EditGroupDialog.asPromise(this.group).then(g => this.redraw());
+      }
+    }
   }
 
   getHtml() {
@@ -9,10 +15,13 @@ class GroupItemView extends BaseView {
       <div class="map-part" style="width: 300px">
       </div>
       <div class="group-body flex-col flex-grow">
-        <div class="group-location">${escapeHtml(this.group.getAddress())}</div>
+        <div class="group-location">
+          ${escapeHtml(this.group.getAddress())}
+          ${this.group.getDestination() ? `<i class="material-icons">arrow_forward</i> ${this.group.getDestination()}` : ''}
+        </div>
         <div class="group-date grey-text">${escapeHtml((new Date(this.group.getTime())).toLocaleString())}</div>
         <i class="group-note flex-grow">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</i>
-        <div class="group-participants">${this.group.getParticipants().map(p => `<span class="${p.isMe ? 'is-me primary-text' : ''}">${escapeHtml(p.name)}</span>`).join(", ")}</div>
+        <div class="group-participants">With: ${this.group.getParticipants().map(p => `<span class="${p.isMe ? 'is-me primary-text' : ''}">${escapeHtml(p.name)}</span>`).join(", ")}</div>
         <div class="group-buttons align-right">
           <a class="btn primary-fg-flat waves-effect waves-light">
             ${this.group.isParticipating() ? 'I can\'t make it' : 'I\'ll be there'}

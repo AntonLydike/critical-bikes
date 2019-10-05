@@ -69,7 +69,7 @@ register_method("POST", "/api/groups/", function ($matches) {
   sql("INSERT INTO participations(`group`, `uid`, `name`) VALUES ('$id', '$user', '$body[creator]')");
 
   if ($query->success) {
-    return_status(STATUS_CREATED, getGroup($query->getId()), ['isCreator' => 'boolean']);
+    return_status(STATUS_CREATED, getGroup($query->getId(), $user), ['isCreator' => 'boolean']);
   } else {
     return_status(STATUS_BAD_REQUEST, "Could not create group");
   }
@@ -91,13 +91,13 @@ register_method("DELETE", "/api/groups/:group", function ($matches) {
 register_method("POST", "/api/groups/:group", function ($matches) {
   $user = sql_esc(assert_auth());
   $body = get_json_body();
-  $group = sql_esc(assert_uuid($matches[1]));
+  $groupId = sql_esc(assert_uuid($matches[1]));
 
-  $group = sql("SELECT `id` FROM groups WHERE id = '$group' AND creator = '$user'");
+  $group = sql("SELECT `id` FROM groups WHERE id = '$groupId' AND creator = '$user'");
 
   assert_result($group, "Group not found (or does not belong to you)!");
 
-  $query = new UpdateQuery('folders', $folderId);
+  $query = new UpdateQuery('groups', $groupId);
   $query
     ->set_optional('destination', $body['destination'])
     ->set_optional('lat', $body['lat'])
@@ -109,13 +109,13 @@ register_method("POST", "/api/groups/:group", function ($matches) {
     ->run();
 
   if ($query->success) {
-    return_status(STATUS_OK, getGroup($query->getId()), ['isCreator' => 'boolean']);
+    return_status(STATUS_OK, getGroup($groupId, $user), ['isCreator' => 'boolean']);
   } else {
     return_status(500, "Error editing group");
   }
 });
 
-function getGroup($id) {
+function getGroup($id, $uid = '') {
   $group = sql("SELECT `id`, `description`, `address`, `destination`, `lat`, `lon`, `time`, IF(`creator` = '$uid', 1, 0) as isCreator FROM `groups` WHERE id = '$id'");
   if (is_null($group) || count($group) == 0) return null;
 

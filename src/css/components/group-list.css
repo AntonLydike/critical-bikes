@@ -19,8 +19,17 @@
   font-weight: 300;
 }
 
+.group-item .group-location i.material-icons {
+    font-size: inherit;
+    vertical-align: text-top;
+}
+
 .group-item .group-date {
   font-size: 1.4rem;
+}
+
+.group-item .group-note {
+  white-space: pre-wrap;
 }
 
 .group-body > *:not(:last-child) {
