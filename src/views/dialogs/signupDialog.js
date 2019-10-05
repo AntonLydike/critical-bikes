@@ -7,24 +7,27 @@ class SignupDialog extends BaseDialog {
 
     this.server = server;
 
+    const completionCallback = e => {
+      e.preventDefault();
+      let username = this.$('#name').value.trim();
+      if (username.length == 0) username = "Anonymous";
+      if (server.authenticated) {
+        server.username = username;
+      } else {
+        server.authenticate(uuid(), username);
+      }
+      this.close();
+      done();
+    }
+
     this.events = {
       'click #btn_cancel': e => {
         e.preventDefault();
         this.close();
         abort();
       },
-      'click #btn_accept': e => {
-        e.preventDefault();
-        let username = this.$('#name').value.trim();
-        if (username.length == 0) username = "Anonymous";
-        if (server.authenticated) {
-          server.username = username;
-        } else {
-          server.authenticate(uuid(), username);
-        }
-        this.close();
-        done();
-      }
+      'click #btn_accept': completionCallback,
+      'submit form': completionCallback
     }
 
     this.open();
