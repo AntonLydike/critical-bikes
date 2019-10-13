@@ -2,6 +2,8 @@
 @include 'models/*'
 @include 'views/*'
 
+// set leaflet icon base
+L.Icon.Default.imagePath = "https://unpkg.com/leaflet@1.5.1/dist/images/"
 
 // initialize server
 const server = new Server({
