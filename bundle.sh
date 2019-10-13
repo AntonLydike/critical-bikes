@@ -83,7 +83,6 @@ function main {
   # if building for production, remove source folders, cache, build.sh
   if [ "${flags[production]}" == true ]; then
     rm -r src;
-    rm build.sh
     rm -r "${flags[cache]}"
   fi
 }

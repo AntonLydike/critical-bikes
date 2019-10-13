@@ -1,7 +1,7 @@
 # this docker container is used to build the final product
 FROM ubuntu:bionic
 
-RUN apt-get update; apt-get install -y npm tar
+RUN apt-get update; apt-get install -y npm tar curl
 
 COPY . /build
 
