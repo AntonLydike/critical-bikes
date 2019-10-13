@@ -5,3 +5,6 @@ build.log
 
 # build cache
 .cache
+
+# finished builds
+*.tar.gz

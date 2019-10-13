@@ -4,7 +4,13 @@
       "@babel/preset-env",
       {
         "targets": "> 0.25%, not dead",
-        "useBuiltIns": false
+        "modules": false
       }
-    ]]
+    ],
+    "minify"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-regenerator"
+  ],
+  "sourceType": "script"
 }

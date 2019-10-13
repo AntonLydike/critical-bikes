@@ -3,9 +3,9 @@ FROM ubuntu:bionic
 
 RUN apt-get update; apt-get install -y npm tar
 
-RUN npm init -y; npm install -g @babel/core @babel/cli babel-minify; npm install @babel/preset-env babel-minify
-
 COPY . /build
+
+RUN cd /build; npm init -y; npm install -g @babel/core @babel/cli; npm install @babel/core @babel/preset-env @babel/plugin-transform-regenerator @babel/polyfill babel-preset-minify --save-dev
 
 # database config
 ARG sqlusr=criticalmass
