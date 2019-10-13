@@ -64,7 +64,7 @@ class BaseDialog extends BaseView {
      */
     redraw() {
         let node = this.__getNode().querySelector('.modal-content');
-        this.find('.modal-content')[0].replaceWith(node);
+        this.$('.modal-content').replaceWith(node);
         this.opened();
         M.updateTextFields();
     }

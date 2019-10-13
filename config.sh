@@ -31,7 +31,7 @@ sed -i "s/__USER__/$sqlusr/g;s/__PASSWORD__/$sqlpw/g;s/__DATABASE__/$sqldb/g;s/_
 ./bundle.sh --production
 
 # assemble polyfill and main script
-cat node_modules/@babel/polyfill/dist/polyfill.js > tmp.build.js
+cat node_modules/@babel/polyfill/dist/polyfill.min.js > tmp.build.js
 cat main.build.js >> tmp.build.js
 
 # run thing through babel

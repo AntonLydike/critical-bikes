@@ -6,6 +6,10 @@
   z-index: 100;
 }
 
+body nav a {
+  color: #fff !important;
+}
+
 nav .brand-logo i.material-icons {
   font-size: inherit;
     margin-right: 8px;

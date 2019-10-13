@@ -76,7 +76,6 @@ class CreateGroupView extends BaseDialog {
     this.group.setLatLon(loc.lat, loc.lon);
     this.group.setDestination(this.$('#target').value.trim());
 
-    console.log(new Date(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber));
     this.group.setTime(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber);
 
     SignupDialog.ensureSignedIn(this.app.server).then(() => {
@@ -99,8 +98,7 @@ class CreateGroupView extends BaseDialog {
 
   reset() {
     this.group = new Group();
-    this.$('#errors').innerText = "";
-    this.$$('input').forEach(i => i.value="")
+    this.redraw();
     this.close();
   }
 }

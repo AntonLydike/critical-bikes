@@ -16,13 +16,18 @@ class AppView extends BaseView {
           <a class="brand-logo">
             Critical<span class="light">Bikes</span>
           </a>
+          <ul class="right hide-on-med-and-down">
+              <li><a target="_blank" rel="noopener" href="https://github.com/AntonLydike/critical-bikes">GitHub</a></li>
+          </ul>
         </div>
-
       </nav>
       <div id="app-view-main" class="container">
-        ${this.placeView(new CreateGroupView(this))}
+        <div class="beta-reminder">
+          This tool is still in early development. Please report bugs on the projects <a target="_blank" rel="noopener" href="https://github.com/AntonLydike/critical-bikes/issues">issues page</a>.
+        </div>
         ${this.placeView(this.groupList)}
       </div>
+      ${this.placeView(new CreateGroupView(this))}
     </div>`;
   }
 

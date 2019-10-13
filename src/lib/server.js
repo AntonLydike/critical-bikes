@@ -22,6 +22,7 @@ class Server {
           this.uid = auth.uid;
           this.username = auth.name;
           this.authenticated = true;
+          console.log("[Server] initialized with account", this);
 
           if (typeof this.settings.onAuth == 'function') this.settings.onAuth(this);
         } else {
@@ -36,6 +37,7 @@ class Server {
   }
 
   authenticate(uid, username) {
+    console.log("[Server.authenticate]", this);
     if (this.authenticated) {
       throw new Error("Already authenticated!");
     }
@@ -48,6 +50,7 @@ class Server {
   }
 
   logout() {
+    console.log("[Server] logged out", this);
     this.authenticated = false;
     this.uid = null;
     this.username = null;
@@ -56,6 +59,7 @@ class Server {
   }
 
   post(url, body) {
+    console.log("[Server.post]", url, body);
     return fetch(this.url + url, this.addUid({
       method: 'POST',
     	headers: {
@@ -66,6 +70,7 @@ class Server {
   }
 
   delete(url, body) {
+    console.log("[Server.delete]", url, body);
     return fetch(this.url + url, this.addUid({
       method: 'DELETE',
     	headers: {
@@ -76,6 +81,7 @@ class Server {
   }
 
   get(url) {
+    console.log("[Server.get]", url);
     return fetch(this.url + url, this.addUid({})).then(this.handleRequest(true));
   }
 
@@ -105,7 +111,11 @@ class Server {
         return resp;
       }
 
-      return resp.json().catch(err => {
+      return resp.json().then(json => {
+        console.log("[Server.handleRequest]", this, json);
+
+        return json;
+      }).catch(err => {
         this.onError(resp.status, {
           message: "Error while parsing json body",
           errors: [err, resp]

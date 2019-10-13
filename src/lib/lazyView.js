@@ -3,12 +3,15 @@ class LazyView extends BaseView {
     super();
     this.__lv_data = null;
 
-    if (promise instanceof Promise) {
-      this.waitFor(promise, 'initial')
+    if (promise && promise.then && typeof promise.then == 'function' && promise.catch && typeof promise.catch == 'function') {
+      this.waitFor(promise, 'initial');
+    } else {
+      this.__lv_data = promise;
+      this.__lv_error = false;
+      this.__lv_loading = false;
+      this.__lv_resource = 'initial';
     }
 
-    this.__lv_data = promise;
-    this.__lv_error = false;
   }
 
   waitFor(promise, resource) {

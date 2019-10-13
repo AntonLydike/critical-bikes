@@ -1,5 +1,7 @@
 class GroupListView extends LazyView {
   constructor(list) {
+    console.log("[GroupListView.constructor] ", list);
+
     if (list) {
       super(Promise.resolve(list));
     } else {
@@ -8,6 +10,8 @@ class GroupListView extends LazyView {
   }
 
   getContent(list) {
+    console.log("[" + this.__proto__.constructor.name + ".getContent] ", this, list);
+
     if (list.length == 0) {
       return `<div><h1 class="grey-text">Sadly, there don't seem to be any groups at the moment :(</h1></div>`;
     }

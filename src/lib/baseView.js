@@ -11,6 +11,8 @@ class BaseView {
         this.____nodes = [];
         // link to the parent view, if it was embedded.
         this.__parentView = null;
+
+        console.log("[" + this.__proto__.constructor.name + ".constructor] ", this);
     }
 
     /**
@@ -24,6 +26,7 @@ class BaseView {
      * redraw this view and replace the old html
      */
     redraw() {
+        console.log("[" + this.__proto__.constructor.name + ".redraw] ", this, this.isRendered());
         if (!this.isRendered()) return;
         let nodeArr = Array.from(this.____nodes);
         let old = nodeArr.pop();
@@ -38,6 +41,7 @@ class BaseView {
      * @param root {HTMLElement}
      */
     renderInside(root) {
+        console.log("[" + this.__proto__.constructor.name + ".renderInside] ", this, root);
         let node = this.__getNode();
         this.____nodes = Array.from(node.childNodes);
         node.childNodes.forEach(child => root.appendChild(child));
@@ -53,6 +57,7 @@ class BaseView {
      * @private
      */
     __renderReplaceWith(anchor, parent) {
+        console.log("[" + this.__proto__.constructor.name + ".__renderReplaceWith] ", this, anchor, parent);
         let node = this.__getNode();
         this.____nodes = Array.from(node.childNodes);
         if (parent !== undefined) {
@@ -113,6 +118,7 @@ class BaseView {
      * @param view {BaseView}
      */
     placeView(view) {
+        console.log("[" + this.__proto__.constructor.name + ".placeView] ", this, view);
         if (!(view instanceof BaseView)) throw new Error("Cannot embed non BaseView object into view!");
 
         // generate a unique id
@@ -179,6 +185,7 @@ class BaseView {
      * Remove view completely from DOM
      */
     remove() {
+        console.log("[" + this.__proto__.constructor.name + ".remove] ", this);
         this.____nodes.forEach(node => {
             node.remove();
         })

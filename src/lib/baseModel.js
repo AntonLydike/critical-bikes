@@ -7,6 +7,8 @@ class BaseModel {
     if (this.json.created !== undefined && typeof this.json.created === 'string') {
       this.json.created = this.__parseDate(this.json.created);
     }
+
+    console.log("[" + this.__proto__.constructor.name + ".constructor] ", json);
   }
 
   getId() {

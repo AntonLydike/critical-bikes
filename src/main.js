@@ -14,6 +14,8 @@ const server = new Server({
 BaseModel.server = server;
 
 // create app
-const app = new AppView();
 
-app.start(server, document.querySelector('#app-body'))
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new AppView();
+  app.start(server, document.querySelector('#app-body'))
+})
