@@ -7,7 +7,7 @@ CriticalMass planning tool.
  - no registration
  - simple to use
  - open source
- - simple REST-like API (so you can even use curl for interaction, if you want)
+ - [simple, REST-like API](/API.md) (so you can even use curl for interaction, if you so desire) 
 
 ## About this repo
 

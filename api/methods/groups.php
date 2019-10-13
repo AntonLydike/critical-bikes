@@ -69,7 +69,7 @@ register_method("POST", "/api/groups/", function ($matches) {
   sql("INSERT INTO participations(`group`, `uid`, `name`) VALUES ('$id', '$user', '$body[creator]')");
 
   if ($query->success) {
-    return_status(STATUS_CREATED, getGroup($query->getId(), $user), ['isCreator' => 'boolean']);
+    return_status(STATUS_CREATED, getGroup($query->getId(), $user), ['isCreator' => 'boolean', 'time' => 'number']);
   } else {
     return_status(STATUS_BAD_REQUEST, "Could not create group");
   }
@@ -81,7 +81,7 @@ register_method("DELETE", "/api/groups/:group", function ($matches) {
 
   $res = sql("DELETE FROM groups WHERE id = '$group' AND creator = '$user' LIMIT 1");
 
-  if ($res->affected_rows == 1) {
+  if ($res->affected_rows >= 1) {
     return_status(STATUS_NO_CONTENT);
   } else {
     return_status(STATUS_NOT_FOUND, "Group not found (or does not belong to you)");
@@ -109,7 +109,7 @@ register_method("POST", "/api/groups/:group", function ($matches) {
     ->run();
 
   if ($query->success) {
-    return_status(STATUS_OK, getGroup($groupId, $user), ['isCreator' => 'boolean']);
+    return_status(STATUS_OK, getGroup($groupId, $user), ['isCreator' => 'boolean', 'time' => 'number']);
   } else {
     return_status(500, "Error editing group");
   }
