@@ -1,13 +1,13 @@
 # CriticalBikes
 
-CriticalMass planning tool.
+CriticalMass planning tool. Licensed under the [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html)
 
 ## our motto
 
  - no registration
  - simple to use
  - open source
- - [simple, REST-like API](/API.md) (so you can even use curl for interaction, if you so desire) 
+ - [simple, REST-like API](/API.md) (so you can even use curl for interaction, if you so desire)
 
 ## About this repo
 
