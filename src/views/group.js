@@ -20,7 +20,6 @@ class GroupItemView extends BaseView {
   }
 
   getHtml() {
-    debugger;
     if (this.group.deleted) return null;
 
     return `<div class="group-item z-depth-2 flex flex-row ${this.group.isCreator() ? 'is-creator' : ''}">
@@ -31,7 +30,7 @@ class GroupItemView extends BaseView {
           ${escapeHtml(this.group.getAddress())}
           ${this.group.getDestination() ? `<i class="material-icons">arrow_forward</i> ${escapeHtml(this.group.getDestination())}` : ''}
         </div>
-        <div class="group-date grey-text">${escapeHtml((new Date(this.group.getTime())).toLocaleString())}</div>
+        <div class="group-date grey-text">Every day at ${this.prettyTime(this.group.getTime())}</div>
         <i class="group-note flex-grow">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</i>
         <div class="group-participants">With: ${this.group.getParticipants().map(p => `<span class="${p.isMe ? 'is-me primary-text' : ''}">${escapeHtml(p.name)}</span>`).join(", ")}</div>
         <div class="group-buttons align-right">
@@ -42,6 +41,10 @@ class GroupItemView extends BaseView {
       </div>
       ${this.group.isCreator() ? '<div class="edit-button primary-fg-flat"><i class="material-icons">edit</i></div>' : ''}
     </div>`
+  }
+
+  prettyTime(date) {
+    return date.getHours() + ':' + date.getMinutes();
   }
 
   rendered() {

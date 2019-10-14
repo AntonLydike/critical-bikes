@@ -39,23 +39,19 @@ class EditGroupDialog extends BaseDialog {
   getContent() {
     return `<form class="row">
       <h2>Change group details</h2>
-        <div class="input-field col s12 m6 l8">
+        <div class="input-field col s12 m8">
           <input type="text" name="address" id="address" required value="${escapeHtml(this.group.getAddress())}"/>
           <label for="address">Meeting point</label>
         </div>
-        <div class="input-field col s12 m3 l2">
-          <input type="date" name="date" id="date" required value="${this.group.getTime().toISOString().split('T')[0]}"/>
-          <label for="date">Date</label>
-        </div>
-        <div class="input-field col s12 m3 l2">
-          <input type="time" name="time" id="time" step="60" required value="${this.group.getTime().toISOString().split('T')[1].substr(0,5)}"/>
+        <div class="input-field col s12 m4">
+          <input type="time" name="time" id="time" step="60" required value="${this.group.getTime().toTimeString().substr(0,5)}"/>
           <label for="time">Time</label>
         </div>
-        <div class="input-field col s12 m6 l8">
+        <div class="input-field col s12 m8">
           <input type="text" name="target" id="target" value="${escapeHtml(this.group.getDestination())}"/>
           <label for="target">Destination (optional)</label>
         </div>
-        <div class="col s12 m6 l4 center submit-col flex-row">
+        <div class="col s12 m4 center submit-col flex-row">
           <span class="red-text left flex-grow" id="errors"></span>
           <div class="ring-loader small hide" id="loader"></div>
         </div>
@@ -86,7 +82,7 @@ class EditGroupDialog extends BaseDialog {
       this.group.setLatLon(loc.lat, loc.lon);
     }
 
-    this.group.setTime(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber);
+    this.group.setTime((new Date()).setHours(0) + this.$('#time').valueAsNumber);
 
     this.group.setDestination(this.$('#target').value.trim())
 

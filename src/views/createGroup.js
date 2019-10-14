@@ -43,19 +43,15 @@ class CreateGroupView extends BaseDialog {
   getContent() {
     return `<form class="row">
         <h2>Create a new group</h2>
-        <div class="input-field col s12 m6 l8">
+        <div class="input-field col s12 m8">
           <input type="text" name="address" id="address" required/>
           <label for="address">Meeting point</label>
         </div>
-        <div class="input-field col s12 m3 l2">
-          <input type="date" name="date" id="date" required value="${(new Date()).toISOString().split('T')[0]}"/>
-          <label for="date">Date</label>
-        </div>
-        <div class="input-field col s12 m3 l2">
+        <div class="input-field col s12 m4">
           <input type="time" name="time" id="time" step="60" required/>
           <label for="time">Time</label>
         </div>
-        <div class="input-field col s12 m6 l8">
+        <div class="input-field col s12 m8">
           <input type="text" name="target" id="target"/>
           <label for="target">Destination (optional)</label>
         </div>
@@ -74,7 +70,7 @@ class CreateGroupView extends BaseDialog {
     this.group.setLatLon(loc.lat, loc.lon);
     this.group.setDestination(this.$('#target').value.trim());
 
-    this.group.setTime(this.$('#date').valueAsDate.setHours(0) + this.$('#time').valueAsNumber);
+    this.group.setTime((new Date()).setHours(0) + this.$('#time').valueAsNumber);
 
     SignupDialog.ensureSignedIn(this.app.server).then(() => {
       this.group.setCreator(this.app.server.username);
