@@ -44,7 +44,7 @@ class GroupItemView extends BaseView {
   }
 
   prettyTime(date) {
-    return date.getHours() + ':' + date.getMinutes();
+    return date.getHours() + ':' + ("0" + date.getMinutes()).substr(-2);
   }
 
   rendered() {
