@@ -40,8 +40,7 @@ Once you close the container (with `CTRL+D`) it will automatically be deleted.
 
 ## To-Do
 
+Look at the issues page for more information.
+
  - multilanguage support
  - enable a config for the osm country tag (currently hardocded into [`geocode.js`](/src/lib/geocode.js))
- - delete groups? (should already be implemented in the backend)
- - add documentation for REST API
- - get babel-minify working with the current setup (breaks and says `Error: /build/tmp.build.js: don't know how to turn this value into a node`)
