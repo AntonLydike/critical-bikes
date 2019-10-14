@@ -6,8 +6,7 @@
         "targets": "> 0.25%, not dead",
         "modules": false
       }
-    ],
-    "minify"
+    ]
   ],
   "plugins": [
     "@babel/plugin-transform-regenerator"

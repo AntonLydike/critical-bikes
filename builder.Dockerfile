@@ -18,4 +18,4 @@ ARG contact=anonymous
 # set production mode
 ENV MODE=$mode
 
-RUN cd /build; chmod +x config.sh; ./config.sh $sqlusr $sqlpw $sqldb $sqlhost $contact
+RUN cd /build; chmod +x config.sh; ./config.sh "$sqlusr" "$sqlpw" "$sqldb" "$sqlhost" "$contact"

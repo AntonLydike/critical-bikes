@@ -203,7 +203,7 @@ function log_to_file {
 
 if [ "${flags[watch]}" == true ]; then
   while true; do
-    inotifywait -q -r -e modify,move,create,delete --exclude '(build\.|.cache|api)' .
+    inotifywait -q -r -e modify,move,create,delete --exclude '(build\.|\.cache|api|\.git|\.html)' .
     main
   done
 else
