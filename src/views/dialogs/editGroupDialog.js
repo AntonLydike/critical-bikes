@@ -1,6 +1,12 @@
 class EditGroupDialog extends BaseDialog {
   constructor(group, callback, err) {
     super([
+      {
+        id: 'btn_delete',
+        text: 'delete group',
+        color: 'red',
+        close: false
+      },
       BaseDialog.BTN_ACCEPT,
       BaseDialog.BTN_DISCARD,
     ], 800);
@@ -18,6 +24,12 @@ class EditGroupDialog extends BaseDialog {
       'click #btn_discard': e => {
         this.close();
         err();
+      },
+      'click #btn_delete': e => {
+        ConfirmationDialog.asPromise('Do you really want to delete this group? This is not reversible.').then(() => {
+          this.group.delete().then(callback).catch(err);
+          this.close();
+        })
       }
     }
 
@@ -36,7 +48,7 @@ class EditGroupDialog extends BaseDialog {
           <label for="date">Date</label>
         </div>
         <div class="input-field col s12 m3 l2">
-          <input type="time" name="time" id="time" step="60" required value="${this.group.getTime().toISOString().split('T')[1]}"/>
+          <input type="time" name="time" id="time" step="60" required value="${this.group.getTime().toISOString().split('T')[1].substr(0,5)}"/>
           <label for="time">Time</label>
         </div>
         <div class="input-field col s12 m6 l8">
@@ -49,7 +61,7 @@ class EditGroupDialog extends BaseDialog {
         </div>
         <div class="col input-field s12">
           <textarea id="description" class="materialize-textarea" data-length="1024">${escapeHtml(this.group.getDescription())}</textarea>
-          <label for="description">Textarea</label>
+          <label for="description">Description</label>
         </div>
       </form>`;
   }

@@ -23,6 +23,10 @@ class GroupListView extends LazyView {
     return `<div class="center">${this.__lv_loader()}</div>`
   }
 
+  refresh() {
+    return this.waitFor(server.get('/groups').then(groups => groups.map(group => new Group(group))));
+  }
+
   addGroup(group) {
     this.getData().push(group);
     this.redraw();

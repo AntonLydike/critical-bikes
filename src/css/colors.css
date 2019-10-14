@@ -8,6 +8,9 @@ body.primary-indigo .primary-text, body.primary-indigo a[href] {
 }
 
 .primary-fg a[href] {
+  color: rgba(255,255,255,.8) !important;
+}
+.primary-fg p a[href] {
   color: rgba(255,255,255,.6) !important;
 }
 

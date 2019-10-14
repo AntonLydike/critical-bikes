@@ -20,13 +20,16 @@ class GroupItemView extends BaseView {
   }
 
   getHtml() {
-    return `<div class="group-item background-color z-depth-2 flex flex-row ${this.group.isCreator() ? 'is-creator' : ''}">
+    debugger;
+    if (this.group.deleted) return null;
+
+    return `<div class="group-item z-depth-2 flex flex-row ${this.group.isCreator() ? 'is-creator' : ''}">
       <div class="map-part" style="width: 300px">
       </div>
       <div class="group-body flex-col flex-grow">
         <div class="group-location">
           ${escapeHtml(this.group.getAddress())}
-          ${this.group.getDestination() ? `<i class="material-icons">arrow_forward</i> ${this.group.getDestination()}` : ''}
+          ${this.group.getDestination() ? `<i class="material-icons">arrow_forward</i> ${escapeHtml(this.group.getDestination())}` : ''}
         </div>
         <div class="group-date grey-text">${escapeHtml((new Date(this.group.getTime())).toLocaleString())}</div>
         <i class="group-note flex-grow">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</i>

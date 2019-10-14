@@ -43,6 +43,12 @@ class BaseView {
     renderInside(root) {
         console.log("[" + this.__proto__.constructor.name + ".renderInside] ", this, root);
         let node = this.__getNode();
+
+        if (node == null) {
+          this.____nodes = [];
+          return;
+        }
+
         this.____nodes = Array.from(node.childNodes);
         node.childNodes.forEach(child => root.appendChild(child));
 
@@ -58,11 +64,21 @@ class BaseView {
      */
     __renderReplaceWith(anchor, parent) {
         console.log("[" + this.__proto__.constructor.name + ".__renderReplaceWith] ", this, anchor, parent);
-        let node = this.__getNode();
-        this.____nodes = Array.from(node.childNodes);
+
         if (parent !== undefined) {
           this.__parentView = parent;
         }
+
+        let node = this.__getNode();
+
+        // if this view is not to be rendered this time
+        if (node == null) {
+          anchor.remove();
+          this.____nodes = [];
+          return;
+        }
+
+        this.____nodes = Array.from(node.childNodes);
         anchor.replaceWith(...node.childNodes);
 
         // call the DOM inserted event handler
@@ -75,7 +91,6 @@ class BaseView {
       this.rendered();
 
       Object.values(this.__subViews).forEach(view => view.__triggerDOMInsertedEvent());
-
     }
 
     /**
@@ -87,8 +102,12 @@ class BaseView {
         // clear previous subview to prevent 'memory leaks' (accumulation over time)
         this.__subViews = {};
 
+        let html = this.getHtml();
+
+        if (html == null || html == undefined) return null;
+
         let node = document.createElement("div");
-        node.innerHTML = this.getHtml();
+        node.innerHTML = html;
 
         // insert sub-views
         for (let [id, view] of Object.entries(this.__subViews)) {

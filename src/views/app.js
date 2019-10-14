@@ -22,11 +22,15 @@ class AppView extends BaseView {
           </ul>
         </div>
       </nav>
-      <main id="app-view-main" class="container">
-        <div class="beta-reminder">
-          This tool is still in early development. Please report bugs on the projects <a target="_blank" rel="noopener" href="https://github.com/AntonLydike/critical-bikes/issues">issues page</a>.
+      <main id="app-view-main">
+        <div class="container">
+          <div class="beta-reminder">
+            This tool is still in early development. Please report bugs on the projects <a target="_blank" rel="noopener" href="https://github.com/AntonLydike/critical-bikes/issues">issues page</a>.
+          </div>
+          ${this.placeView(this.groupList)}
         </div>
-        ${this.placeView(this.groupList)}
+
+        ${this.placeView(new CreateGroupView(this))}
       </main>
       <footer class="page-footer primary-fg">
           <div class="container">
@@ -52,10 +56,7 @@ class AppView extends BaseView {
             <a class="grey-text text-lighten-4 right pointer action-show-impressum">Impressum</a>
             </div>
           </div>
-        </footer>
-
-      ${this.placeView(new CreateGroupView(this))}
-    </div>`;
+        </footer>`;
   }
 
   start(server, rootNode) {

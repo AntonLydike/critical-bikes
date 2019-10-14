@@ -104,6 +104,11 @@ class Server {
         throw new Error("You are unauthorized, please log in!");
       }
 
+      // handle expected and unexpected no content
+      if (resp.status == 204) {
+        json = false;
+      }
+
       if (status === null ? resp.ok : resp.status === status) {
         if (json) {
           return resp.json();

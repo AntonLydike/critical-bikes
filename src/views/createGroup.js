@@ -35,11 +35,9 @@ class CreateGroupView extends BaseDialog {
   }
 
   getHtml() {
-    let button = `<div class="btn-floating btn-large waves-effect waves-light primary-fg-flat" id="open-create-group-window">
+    return super.getHtml() + ` <div class="btn-floating btn-large waves-effect waves-light primary-fg-flat" id="open-create-group-window">
       <i class="material-icons">add</i>
-    </div>`
-
-    return super.getHtml() + button;
+    </div>`;
   }
 
   getContent() {

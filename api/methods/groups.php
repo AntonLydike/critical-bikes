@@ -77,7 +77,7 @@ register_method("POST", "/api/groups/", function ($matches) {
 
 register_method("DELETE", "/api/groups/:group", function ($matches) {
   $user = sql_esc(assert_auth());
-  $goup = sql_esc(assert_uuid($matches[1]));
+  $group = sql_esc(assert_uuid($matches[1]));
 
   $res = sql("DELETE FROM groups WHERE id = '$group' AND creator = '$user' LIMIT 1");
 
