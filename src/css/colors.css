@@ -7,13 +7,17 @@ body.primary-indigo .primary-text, body.primary-indigo a[href] {
   color: #3f51b5;
 }
 
+.primary-fg a[href] {
+  color: rgba(255,255,255,.6) !important;
+}
+
 /*// enable theming //*/
 body.theme-dark {
   background: #1f262d;
   color: rgba(255,255,255,0.89);
   transition: .3s;
 }
-body.theme-dark .modal {
+body.theme-dark .modal, body.theme-dark .background-color {
   background: #293038;
   color: rgba(255,255,255,0.89);
 }
@@ -50,6 +54,6 @@ body.theme-light {
   transition: .3s;
 }
 
-body.theme-light .modal {
+body.theme-light .modal, body.theme-light .background-color {
   background: #fff;
 }

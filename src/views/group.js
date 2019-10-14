@@ -8,7 +8,7 @@ class GroupItemView extends BaseView {
         EditGroupDialog.asPromise(this.group).then(g => this.redraw());
       },
       'click .join-leave-button': e => {
-        SignupDialog.ensureSignedIn(server).then(empty => {  
+        SignupDialog.ensureSignedIn(server).then(empty => {
           if (this.group.isParticipating()) {
             this.group.leave().then(x => this.redraw());
           } else {
@@ -20,7 +20,7 @@ class GroupItemView extends BaseView {
   }
 
   getHtml() {
-    return `<div class="group-item z-depth-2 flex flex-row ${this.group.isCreator() ? 'is-creator' : ''}">
+    return `<div class="group-item background-color z-depth-2 flex flex-row ${this.group.isCreator() ? 'is-creator' : ''}">
       <div class="map-part" style="width: 300px">
       </div>
       <div class="group-body flex-col flex-grow">

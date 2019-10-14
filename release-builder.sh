@@ -51,7 +51,10 @@ if [ "$(docker ps -a | grep critm_dummy)" ]; then
   docker container rm critm_dummy
 fi
 
-docker build -f builder.Dockerfile --build-arg sqlusr="${flags[sqlusr]}" --build-arg sqlpw="${flags[sqlpw]}" --build-arg sqldb="${flags[sqldb]}" --build-arg sqlhost="${flags[sqlhost]}" --build-arg mode="${flags[mode]}" -t critm_builder .
+echo "Please enter your name and contact details, these will be displayed in the impressum page";
+read contactinfo
+
+docker build -f builder.Dockerfile --build-arg sqlusr="${flags[sqlusr]}" --build-arg contact="$contactinfo" --build-arg sqlpw="${flags[sqlpw]}" --build-arg sqldb="${flags[sqldb]}" --build-arg sqlhost="${flags[sqlhost]}" --build-arg mode="${flags[mode]}" -t critm_builder .
 
 docker container create -ti --name critm_dummy critm_builder bash
 

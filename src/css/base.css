@@ -21,26 +21,22 @@ html, body {
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
 }
 
-.app-layout {
+body {
   flex-grow: 1;
-  margin-top: 64px;
   overflow: auto;
-  padding-bottom: 80px; /* 24px + 56px */
+}
+
+main {
+  padding-top: 64px;
+  flex-grow: 1;
 }
 
 input {
     color: inherit;
 }
-
-.brand-logo {
-  color: #fff;
-  display: inline-block;
-  font-size: 2.1rem;
-  white-space: nowrap;
-}
-
 
 @media (max-width: 992px) {
   .brand-logo, nav .brand-logo {

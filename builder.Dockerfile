@@ -13,8 +13,9 @@ ARG sqlpw=password
 ARG sqldb=criticalmass
 ARG sqlhost=localhost
 ARG mode=PROD
+ARG contact=anonymous
 
 # set production mode
 ENV MODE=$mode
 
-RUN cd /build; chmod +x config.sh; ./config.sh $sqlusr $sqlpw $sqldb $sqlhost
+RUN cd /build; chmod +x config.sh; ./config.sh $sqlusr $sqlpw $sqldb $sqlhost $contact

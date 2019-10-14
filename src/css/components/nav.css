@@ -1,4 +1,4 @@
-.app-layout > nav {
+nav {
   position: fixed;
   left: 0;
   right: 0;
@@ -6,18 +6,19 @@
   z-index: 100;
 }
 
-body nav a {
+body nav li a {
   color: #fff !important;
 }
 
-nav .brand-logo i.material-icons {
-  font-size: inherit;
-    margin-right: 8px;
-}
-
 @media (min-width: 993px) {
-
   nav .brand-logo {
     margin: 0 16px;
   }
+}
+
+.brand-logo {
+  color: #fff;
+  display: inline-block;
+  font-size: 2.1rem;
+  white-space: nowrap;
 }

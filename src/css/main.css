@@ -1,5 +1,5 @@
 @include 'lib/'
-@include 'components/'
+@include 'base.css'
 @include 'helpers.css'
 @include 'colors.css'
-@include 'base.css'
+@include 'components/'
