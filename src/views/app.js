@@ -52,7 +52,7 @@ class AppView extends BaseView {
           </div>
           <div class="footer-copyright">
             <div class="container">
-            © ${(new Date()).getFullYear()} Studies For Future Augsburg
+            © ${(new Date()).getFullYear()} Students for Future Augsburg
             <a class="grey-text text-lighten-4 right pointer action-show-impressum">Impressum</a>
             </div>
           </div>
