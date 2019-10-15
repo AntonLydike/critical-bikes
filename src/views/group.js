@@ -30,7 +30,7 @@ class GroupItemView extends BaseView {
           ${escapeHtml(this.group.getAddress())}
           ${this.group.getDestination() ? `<i class="material-icons">arrow_forward</i> ${escapeHtml(this.group.getDestination())}` : ''}
         </div>
-        <div class="group-date grey-text">Every day at ${this.prettyTime(this.group.getTime())}</div>
+        <div class="group-date grey-text">Every weekday at ${this.prettyTime(this.group.getTime())}</div>
         <i class="group-note flex-grow">${escapeHtml(this.group.getDescription()) || '<i class="grey-text">No description provided.</i>'}</i>
         <div class="group-participants">With: ${this.group.getParticipants().map(p => `<span class="${p.isMe ? 'is-me primary-text' : ''}">${escapeHtml(p.name)}</span>`).join(", ")}</div>
         <div class="group-buttons align-right">
